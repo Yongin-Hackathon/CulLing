@@ -27,7 +27,7 @@ class SummarizationModule:
             "document": {"content": f"{text}"},
             "option": {"language": "ko", "model": "general", "tone": 2, "summaryCount": 6},
         }
-        result = "ERROR"
+        # result = "ERROR"
         response = requests.post(self.url, headers=self.headers, data=json.dumps(data).encode("UTF-8"))
         rescode = response.status_code
         if rescode == 200:
