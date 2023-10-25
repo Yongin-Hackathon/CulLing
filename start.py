@@ -14,13 +14,13 @@ st.header("CulLing (Culture and Linguistic)")
 st.write(
     """
 **CulLing은 한국어에 익숙하지 않은 분들을 위한 각종 공지문 및 안내문을 요약 후 번역해주는 서비스입니다.** \n
-현재 중국어, 일본어, 베트남어를 지원하고 있습니다. \n
+현재 중국어, 영어, 베트남어, 일본어를 지원하고 있습니다. \n
 """
 )
 
 st.session_state["language_option"] = st.selectbox(
-    "🌏 언어를 선택해주세요 / PLEASE SELECT YOUR LANGUAGE / 请选择您的语言",
-    ("언어 / Language / 语言", "chinese", "vietnam", "english", "japaness", "korean"),
+    "🌏 언어를 선택해주세요 / PLEASE SELECT YOUR LANGUAGE / 请选择您的语言 / ngôn ngữ / 言語",
+    ("언어 / Language / 请选择您的语言 / ngôn ngữ / 语言", "CHINESE", "VIETNAM", "ENGLISH", "JAPANESS"),
 )
 
 language_option = st.session_state["language_option"]
@@ -35,7 +35,7 @@ sum = SummarizationModule(
 )
 
 # 각 언어별로 선택하면 해당 언어로 보여준다
-if language_option == "chinese":
+if language_option == "CHINESE":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
         client_secret="GsCcldWbgX",
@@ -89,7 +89,7 @@ if language_option == "chinese":
                         translate_result = translate.translate(text=sum_result)
                     translate_result = translate_result.replace("\n", " ")
                     st.write(translate_result)
-elif language_option == "vietnam":
+elif language_option == "VIETNAM":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
         client_secret="GsCcldWbgX",
@@ -143,30 +143,30 @@ elif language_option == "vietnam":
                         translate_result = translate.translate(text=sum_result)
                     translate_result = translate_result.replace("\n", " ")
                     st.write(translate_result)
-elif language_option == "english":
+elif language_option == "ENGLISH":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
         client_secret="GsCcldWbgX",
         source_lang_type="한국어",
-        target_lang_type="중국어 간체",
+        target_lang_type="영어",
     )
     st.write(
         """
-    왼쪽 메뉴에서 방법을 선택해주세요!
-    1. 파일을 업로드
-    2. 사진을 찍기      
+    Please choose a method from the left menu!
+    1. Upload a file
+    2. Take a picture    
     """
     )
     menu = [
-        "눌러서 선택하세요!",
-        "업로드",
-        "사진찍기",
+        "Press to Select a method!",
+        "Upload",
+        "Take a picture",
     ]
 
-    choice = st.sidebar.selectbox("메뉴", menu)
+    choice = st.sidebar.selectbox("MENU", menu)
 
-    if choice == "업로드":
-        uploaded_file = st.file_uploader("파일을 업로드해주세요.", type=["png", "jpg", "jpeg"])
+    if choice == "Upload":
+        uploaded_file = st.file_uploader("Please upload a file.", type=["png", "jpg", "jpeg"])
 
         if uploaded_file:
             uploaded_image_type = uploaded_file.type.split("/")[1]
@@ -174,7 +174,7 @@ elif language_option == "english":
                 uploaded_image_type = "jpg"
             st.image(uploaded_file)
 
-            if st.button("번역 결과 보기"):
+            if st.button("Translation Result"):
                 with st.spinner("Wait for it..."):
                     ocr_result = ocr.ocr(image_file=uploaded_file, image_type=uploaded_image_type)
                     sum_result = sum.summarize(text=ocr_result)
@@ -182,22 +182,22 @@ elif language_option == "english":
                 translate_result = translate_result.replace("\n", " ")
                 st.write(translate_result)
 
-    elif choice == "사진찍기":
-        camera = st.toggle("사진찍기")
+    elif choice == "Take a Picture":
+        camera = st.toggle("Take a Picture")
         if camera:
-            picture = st.camera_input("사진을 찍어 주세요.")
+            picture = st.camera_input("Please take a picture so that the contents of the document come out well")
             if picture:
                 picture_type = picture.type.split("/")[1]
                 st.image(picture)
 
-                if st.button("번역 결과 보기"):
+                if st.button("Translation Result"):
                     with st.spinner("Wait for it..."):
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
                     translate_result = translate_result.replace("\n", " ")
                     st.write(translate_result)
-elif language_option == "japaness":
+elif language_option == "JAPANESS":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
         client_secret="GsCcldWbgX",
