@@ -21,7 +21,7 @@ st.session_state["language_option"] = st.selectbox(
     "🌏 PLEASE SELECT YOUR LANGUAGE / 请选择您的语言",
     ("Language / 语言", "chinese", "vietnam", "english", "japaness", "korean"),
 )
-st.session_state["type"] = "upload"
+
 language_option = st.session_state["language_option"]
 ocr = OCRModule(
     api_url="https://yf7kxqhpn7.apigw.ntruss.com/custom/v1/25735/6ee9c3f252e90aa37c2d440206a2d8b55e1895e8c79609ba703195b2ab0f1b3d/general",
@@ -42,30 +42,52 @@ translate = TranslationModule(
 if language_option == "chinese":
     st.write(
         """
-    请上传文件或拍照!         
+    请从左边的菜单中选择方法！
+    1. 文件上传
+    2. 拍照     
     """
     )
-    menu = ["업로드", "사진찍기", "About"]
+    menu = [
+        "点击后选择吧！",
+        "文件上传",
+        "拍照",
+    ]
 
-    choice = st.sidebar.selectbox("메뉴", menu)
+    choice = st.sidebar.selectbox("菜单", menu)
 
-    if choice == "업로드":
-        uploaded_file = st.file_uploader("选择文件", type=["png", "jpg", "jpeg"])
+    if choice == "文件上传":
+        uploaded_file = st.file_uploader("请上传文件", type=["png", "jpg", "jpeg"])
 
         if uploaded_file:
-            image_type = uploaded_file.type.split("/")[1]
-            st.write(image_type)
+            uploaded_image_type = uploaded_file.type.split("/")[1]
+            if uploaded_image_type == "jpeg":
+                uploaded_image_type = "jpg"
             st.image(uploaded_file)
-            st.button("번역", type="primary")
 
-    elif choice == "사진찍기":
-        picture = st.camera_input("拍照留念")
-        if picture:
-            st.image(picture)
+            if st.button("显示翻译结果"):
+                with st.spinner("请稍等"):
+                    ocr_result = ocr.ocr(image_file=uploaded_file, image_type=uploaded_image_type)
+                    sum_result = sum.summarize(text=ocr_result)
+                    translate_result = translate.translate(text=sum_result)
+                translate_result = translate_result.replace("\n", " ")
+                st.write(translate_result)
 
-    # with st.spinner("Wait for it..."):
-    #     time.sleep(5)
-    # st.success("Done!")
+    elif choice == "拍照":
+        camera = st.toggle("拍照")
+        if camera:
+            picture = st.camera_input("请拍张照片，让文件看清楚。")
+            if picture:
+                picture_type = picture.type.split("/")[1]
+                st.image(picture)
+
+                if st.button("显示翻译结果"):
+                    with st.spinner("请稍等"):
+                        ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
+                        sum_result = sum.summarize(text=ocr_result)
+                        translate_result = translate.translate(text=sum_result)
+                    translate_result = translate_result.replace("\n", " ")
+                    st.write(translate_result)
+
 
 elif language_option == "vietnam":
     st.write(
