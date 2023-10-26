@@ -3,10 +3,10 @@ import sys
 from typing import Any, List, Dict, Tuple, Optional
 import urllib.request
 
-# client_id = "BGUkDV36W_HjgcitOlDX" # 개발자센터에서 발급받은 Client ID 값
-# client_secret = "GsCcldWbgX" # 개발자센터에서 발급받은 Client Secret 값
-client_id = "jDX6lD0SgVgDRXl20h48"  # 개발자센터에서 발급받은 Client ID 값
-client_secret = "IY52W6vhZ7"  # 개발자센터에서 발급받은 Client Secret 값
+client_id = "BGUkDV36W_HjgcitOlDX"  # 개발자센터에서 발급받은 Client ID 값
+client_secret = "GsCcldWbgX"  # 개발자센터에서 발급받은 Client Secret 값
+# client_id = "jDX6lD0SgVgDRXl20h48"  # 개발자센터에서 발급받은 Client ID 값
+# client_secret = "IY52W6vhZ7"  # 개발자센터에서 발급받은 Client Secret 값
 
 
 class TranslationModule:

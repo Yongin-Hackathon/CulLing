@@ -71,8 +71,12 @@ if language_option == "CHINESE":
                     ocr_result = ocr.ocr(image_file=uploaded_file, image_type=uploaded_image_type)
                     sum_result = sum.summarize(text=ocr_result)
                     translate_result = translate.translate(text=sum_result)
-                translate_result = translate_result.replace("\n", " ")
+                    translate_result = translate_result.replace("\n", "  \n ")
+                st.subheader("摘要翻译结果！", divider="rainbow")
                 st.write(translate_result)
+
+                values = st.slider("你对翻译结果满意吗？ 请打分!", step=1, min_value=0, max_value=10, value=10)
+                st.write("渐修:", values)
 
     elif choice == "拍照":
         camera = st.toggle("拍照")
@@ -135,14 +139,22 @@ elif language_option == "VIETNAM":
             if picture:
                 picture_type = picture.type.split("/")[1]
                 st.image(picture)
-
+                translate_finished = False
                 if st.button("Xem kết quả dịch thuật"):
                     with st.spinner("Chờ một chút nhé"):
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
-                    translate_result = translate_result.replace("\n", " ")
+                        translate_result = translate_result.replace("\n", "  \n")
+                        translate_finished = True
+                        # if st.button("눌러서 번역 결과 보기"):
+                if translate_finished:
+                    st.subheader("번역 결과", divider="rainbow")
                     st.write(translate_result)
+                    number = st.number_input(
+                        "번역 결과에 만족하셨습니까? 점수를 매겨주세요!", value=10, min_value=0, max_value=10, step=1, placeholder="0~10"
+                    )
+                    st.write("점수 ", number)
 elif language_option == "ENGLISH":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
@@ -179,8 +191,11 @@ elif language_option == "ENGLISH":
                     ocr_result = ocr.ocr(image_file=uploaded_file, image_type=uploaded_image_type)
                     sum_result = sum.summarize(text=ocr_result)
                     translate_result = translate.translate(text=sum_result)
-                translate_result = translate_result.replace("\n", " ")
+                    translate_result = translate_result.replace("\n", "  \n")
+                st.subheader("Translation Result!", divider="rainbow")
                 st.write(translate_result)
+                values = st.slider("번역 결과에 만족하셨습니까? 점수를 매겨주세요!", 0, 10)
+                st.write("점수:", values)
 
     elif choice == "Take a Picture":
         camera = st.toggle("Take a Picture")
@@ -195,8 +210,10 @@ elif language_option == "ENGLISH":
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
-                    translate_result = translate_result.replace("\n", " ")
-                    st.write(translate_result)
+                    st.subheader("번역 결과", divider="rainbow")
+                    st.markdown(translate_result)
+                    # translate_result = translate_result.replace("\n", " ")
+                    # st.write(translate_result)
 elif language_option == "JAPANESS":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
@@ -304,5 +321,7 @@ elif language_option == "korean":
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
-                    translate_result = translate_result.replace("\n", " ")
-                    st.write(translate_result)
+                    st.header("번역 결과", divider="rainbow")
+                    st.markdown(translate_result)
+                    # translate_result = translate_result.replace("\n", " ")
+                    # st.write(translate_result)
