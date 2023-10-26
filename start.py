@@ -91,8 +91,12 @@ if language_option == "CHINESE":
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
-                    translate_result = translate_result.replace("\n", " ")
+                        translate_result = translate_result.replace("\n", " ")
+                    st.subheader("摘要翻译结果！", divider="rainbow")
                     st.write(translate_result)
+
+                    values = st.slider("你对翻译结果满意吗？ 请打分!", step=1, min_value=0, max_value=10, value=10)
+                    st.write("渐修:", values)
 elif language_option == "VIETNAM":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
@@ -129,8 +133,17 @@ elif language_option == "VIETNAM":
                     ocr_result = ocr.ocr(image_file=uploaded_file, image_type=uploaded_image_type)
                     sum_result = sum.summarize(text=ocr_result)
                     translate_result = translate.translate(text=sum_result)
-                translate_result = translate_result.replace("\n", " ")
+                    translate_result = translate_result.replace("\n", "  \n")
+                st.subheader("Đây là kết quả dịch tóm tắt!", divider="rainbow")
                 st.write(translate_result)
+                values = st.slider(
+                    "Anh có hài lòng với kết quả dịch không? Hãy cho điểm đi ạ!",
+                    step=1,
+                    min_value=0,
+                    max_value=10,
+                    value=10,
+                )
+                st.write("điểm số:", values)
 
     elif choice == "chụp ảnh":
         camera = st.toggle("chụp ảnh")
@@ -146,15 +159,16 @@ elif language_option == "VIETNAM":
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
                         translate_result = translate_result.replace("\n", "  \n")
-                        translate_finished = True
-                        # if st.button("눌러서 번역 결과 보기"):
-                if translate_finished:
-                    st.subheader("번역 결과", divider="rainbow")
+                    st.subheader("Đây là kết quả dịch tóm tắt!", divider="rainbow")
                     st.write(translate_result)
-                    number = st.number_input(
-                        "번역 결과에 만족하셨습니까? 점수를 매겨주세요!", value=10, min_value=0, max_value=10, step=1, placeholder="0~10"
+                    values = st.slider(
+                        "Anh có hài lòng với kết quả dịch không? Hãy cho điểm đi ạ!",
+                        step=1,
+                        min_value=0,
+                        max_value=10,
+                        value=10,
                     )
-                    st.write("점수 ", number)
+                    st.write("điểm số:", values)
 elif language_option == "ENGLISH":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
@@ -192,10 +206,16 @@ elif language_option == "ENGLISH":
                     sum_result = sum.summarize(text=ocr_result)
                     translate_result = translate.translate(text=sum_result)
                     translate_result = translate_result.replace("\n", "  \n")
-                st.subheader("Translation Result!", divider="rainbow")
+                st.subheader("Summarization Translation Result!", divider="rainbow")
                 st.write(translate_result)
-                values = st.slider("번역 결과에 만족하셨습니까? 점수를 매겨주세요!", 0, 10)
-                st.write("점수:", values)
+                values = st.slider(
+                    "Are you satisfied with result? Please leave your score!",
+                    step=1,
+                    min_value=0,
+                    max_value=10,
+                    value=10,
+                )
+                st.write("Score:", values)
 
     elif choice == "Take a Picture":
         camera = st.toggle("Take a Picture")
@@ -210,10 +230,17 @@ elif language_option == "ENGLISH":
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
-                    st.subheader("번역 결과", divider="rainbow")
-                    st.markdown(translate_result)
-                    # translate_result = translate_result.replace("\n", " ")
-                    # st.write(translate_result)
+                        translate_result = translate_result.replace("\n", "  \n")
+                    st.subheader("Summarization Translation Result!", divider="rainbow")
+                    st.write(translate_result)
+                    values = st.slider(
+                        "Are you satisfied with result? Please leave your score!",
+                        step=1,
+                        min_value=0,
+                        max_value=10,
+                        value=10,
+                    )
+                    st.write("Score:", values)
 elif language_option == "JAPANESS":
     translate = TranslationModule(
         client_id="BGUkDV36W_HjgcitOlDX",
@@ -234,7 +261,7 @@ elif language_option == "JAPANESS":
         "写真を撮ります",
     ]
 
-    choice = st.sidebar.selectbox("메뉴", menu)
+    choice = st.sidebar.selectbox("メニュー", menu)
 
     if choice == "アップロードする":
         uploaded_file = st.file_uploader("ファイルをアップロードしてください", type=["png", "jpg", "jpeg"])
@@ -250,8 +277,11 @@ elif language_option == "JAPANESS":
                     ocr_result = ocr.ocr(image_file=uploaded_file, image_type=uploaded_image_type)
                     sum_result = sum.summarize(text=ocr_result)
                     translate_result = translate.translate(text=sum_result)
-                translate_result = translate_result.replace("\n", " ")
+                    translate_result = translate_result.replace("\n", "  \n")
+                st.subheader("要約翻訳の結果です！", divider="rainbow")
                 st.write(translate_result)
+                values = st.slider("翻訳の結果に満足しましたか？ 点数をつけてください！", step=1, min_value=0, max_value=10, value=10)
+                st.write("点数:", values)
 
     elif choice == "写真を撮ります":
         camera = st.toggle("写真を撮ります")
@@ -266,8 +296,11 @@ elif language_option == "JAPANESS":
                         ocr_result = ocr.ocr(image_file=picture, image_type="jpg")
                         sum_result = sum.summarize(text=ocr_result)
                         translate_result = translate.translate(text=sum_result)
-                    translate_result = translate_result.replace("\n", " ")
+                        translate_result = translate_result.replace("\n", "  \n")
+                    st.subheader("要約翻訳の結果です！", divider="rainbow")
                     st.write(translate_result)
+                    values = st.slider("翻訳の結果に満足しましたか？ 点数をつけてください！", step=1, min_value=0, max_value=10, value=10)
+                    st.write("点数:", values)
 
 elif language_option == "korean":
     translate = TranslationModule(
